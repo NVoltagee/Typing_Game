@@ -227,7 +227,29 @@ function initEvents() {
   $input.addEventListener("keyup", onKeyUp);
 }
 
-function onKeyDown() {}
+function onKeyDown(event) {
+  const $currentWord = $paragraph.querySelector("word.active");
+  const $currentLetter = $currentWord.querySelector("letter.active");
+
+  const { key } = event;
+  if (key === " ") {
+    event.preventDefault();
+
+    const $nextWord = $currentWord.nextElementSibling;
+    const $nextLetter = $nextWord.querySelector("letter");
+
+    $currentWord.classList.remove("active", "marked");
+    $currentLetter.classList.remove("active");
+
+    $input.value = "";
+
+    const hasMissedLetters =
+      $currentWord.querySelectorAll("letter:not(.correct)").length > 0;
+
+    const classToAdd = hasMissedLetters ? "marked" : "correct";
+    $currentWord.classList.add(classToAdd);
+  }
+}
 
 function onKeyUp() {
   const $currentWord = $paragraph.querySelector("word.active");
